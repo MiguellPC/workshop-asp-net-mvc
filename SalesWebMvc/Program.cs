@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SalesWebMvc.Data;
+
 namespace SalesWebMvc
 {
     public class Program
@@ -13,6 +14,8 @@ namespace SalesWebMvc
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddScoped<SeedingService>();
+            builder.Services.AddTransient<SeedingService>();
 
             var app = builder.Build();
 
@@ -22,6 +25,11 @@ namespace SalesWebMvc
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
+            }
+
+            if (args.Length == 1 && args[0].ToLower() == "seeddata")
+            {
+                SeedData(app);
             }
 
             app.UseHttpsRedirection();
@@ -36,6 +44,17 @@ namespace SalesWebMvc
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.Run();
+        }
+
+        private static void SeedData(IHost app)
+        {
+            var scopedFactory = app.Services.GetService<IServiceScopeFactory>();
+
+            using (var scope = scopedFactory.CreateScope())
+            {
+                var service = scope.ServiceProvider.GetService<SeedingService>();
+                service.Seed();
+            }
         }
     }
 }

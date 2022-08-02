@@ -10,10 +10,14 @@
         {
         }
 
-        public Department(int id, string name)
+        public Department(string name)
+        {
+            Name = name;
+        }
+
+        public Department(int id, string name) : this(name)
         {
             Id = id;
-            Name = name;
         }
 
         public void AddSeller(Seller seller)
