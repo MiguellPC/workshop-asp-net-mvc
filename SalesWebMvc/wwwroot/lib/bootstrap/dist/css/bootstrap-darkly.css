@@ -3671,9 +3671,9 @@ textarea.form-control-lg {
   color: var(--bs-nav-link-hover-color);
 }
 .nav-link.disabled {
-  color: var(--bs-nav-link-disabled-color);
-  pointer-events: none;
-  cursor: default;
+    color: var(--bs-nav-link-disabled-color);
+    pointer-events: none;
+    cursor: default;
 }
 
 .nav-tabs {
