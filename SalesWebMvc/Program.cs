@@ -1,3 +1,5 @@
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SalesWebMvc.Data;
@@ -20,6 +22,7 @@ namespace SalesWebMvc
             builder.Services.AddScoped<SellerService>();
             builder.Services.AddScoped<DepartmentService>();
 
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -34,6 +37,14 @@ namespace SalesWebMvc
             {
                 SeedData(app);
             }
+
+            // localization
+            var enUs = "en-Us";
+            var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(enUs)
+                .AddSupportedCultures(enUs)
+                .AddSupportedUICultures(enUs);
+
+            app.UseRequestLocalization(localizationOptions);
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
